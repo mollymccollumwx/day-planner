@@ -1,50 +1,65 @@
-//
-var container = $(".container");
-
 //sets todays date using moment.js
 var todaysDate = $("#currentDay");
 todaysDate.text(moment().format("dddd, MMMM, Do YYYY"));
 
 //create time blocks for each hour 9-5pm and style them
 var timeOfDay = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+time();
 
-for (let i = 0; i < timeOfDay.length; i++){
- var row = $("<div>").addClass("row time-block");
- 
- var hour = $("<div>").addClass("hour col-1");
- hour.text(moment().set('hour', timeOfDay[i]).format("hA"));
- row.append(hour);
+//dynamically creates elements
+function time() {
+  for (let i = 0; i < timeOfDay.length; i++) {
+    //row for all the content
+    var row = $("<div>").addClass("row time-block");
 
- var textArea = $("<textarea>").addClass("description col-10");
- if (moment().hour() === timeOfDay[i]){
-     textArea.addClass("present");
- } else if (moment().hour() < timeOfDay[i]){
-     textArea.addClass("future");
- } else if (moment().hour() > timeOfDay[i]){
-     textArea.addClass("past");
- }
- 
-console.log(moment().hour());
- row.append(textArea);
+    //hour block -- takes iteration of timeOfDay and appends it to the row
+    var hour = $("<div>").addClass("hour col-1");
+    hour.text(moment().set("hour", timeOfDay[i]).format("hA"));
+    row.append(hour);
 
- var button = $("<button>").addClass("saveBtn col-1 fas fa-save");
- row.append(button);
+    //creates input area, sets the background color based on the time of day and appends it to the row
+    var textArea = $("<textarea>").addClass("description col-10");
+    if (moment().hour() === timeOfDay[i]) {
+      textArea.addClass("present");
+    } else if (moment().hour() < timeOfDay[i]) {
+      textArea.addClass("future");
+    } else if (moment().hour() > timeOfDay[i]) {
+      textArea.addClass("past");
+    }
+    row.append(textArea);
 
- $(".container").append(row);
+    //creates button-adds a class from font awesome for the save icon and appends it to the row
+    var button = $("<button>").addClass("saveBtn col-1 fas fa-save");
+    row.append(button);
 
+    //appends the row to the container on the HTML
+    $(".container").append(row);
+  }
 }
-function saveInput(event){
-    var siblingTextArea = $(this).siblings(".description").val();
-    console.log(siblingTextArea);
+//listens for click on the buttons, calls the save Input function
+$(".container").on("click", "button", saveInput);
 
-    localStorage.setItem("siblingTextArea", siblingTextArea);
+//saves the user input in local storage
+function saveInput(event) {
+  var siblingTextArea = $(this).siblings(".description").val();
+  var siblingHour = $(this).siblings(".hour").html();
+  console.log(siblingTextArea, siblingHour);
+
+//   var storageData = [];
+
+//   storageData = 
+//   [{ hour: siblingHour,
+//     text: siblingTextArea}]
+
+    localStorage.setItem(siblingHour, siblingTextArea);
     
+
+//   localStorage.setItem("storageData", JSON.stringify(storageData));
 }
 
-container.on("click", "button", saveInput);
-
-
-
-
-
-
+function getStorage() {
+    
+    // JSON.parse(localStorage.getItem(storageData));
+    localStorage.getItem()
+}
+ getStorage();
