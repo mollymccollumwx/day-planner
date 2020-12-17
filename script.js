@@ -19,7 +19,7 @@ function time() {
 
     //creates input area, sets the background color based on the time of day and appends it to the row
     var textArea = $("<textarea>").addClass("description col-10");
-    textArea.data("data-index", [i]);
+    textArea.data("data-index", timeOfDay[i] + "AM");
     if (moment().hour() === timeOfDay[i]) {
       textArea.addClass("present");
     } else if (moment().hour() < timeOfDay[i]) {
@@ -27,7 +27,7 @@ function time() {
     } else if (moment().hour() > timeOfDay[i]) {
       textArea.addClass("past");
     }
-    //conditionals for 
+    textArea.val(localStorage.getItem(timeOfDay[i]+ "AM"));
     row.append(textArea);
 
     //creates button-adds a class from font awesome for the save icon and appends it to the row
@@ -43,26 +43,14 @@ $(".container").on("click", "button", saveInput);
 
 //saves the user input in local storage
 function saveInput(event) {
-  var savedTextArea = $(this).siblings(".description").val();
-   var savedHour = $(this).siblings(".hour").html();
-   // var siblingHour = $(this.previousElementSibling).data("data-index");
-  console.log(savedTextArea, savedHour);
+  event.preventDefault();
 
-//   var storageData = [];
+  //saves the user input and sibling hour to local storage
+  var savedTextArea = ($(this).siblings(".description").val());
 
-//   storageData = 
-//   [{ hour: siblingHour,
-//     text: siblingTextArea}]
+  var savedHour = $(this.previousElementSibling).data("data-index");
 
-    localStorage.setItem(savedHour, savedTextArea);
+  localStorage.setItem(savedHour, savedTextArea);
     
-
-//   localStorage.setItem("storageData", JSON.stringify(storageData));
 }
 
-// function getStorage() {
-    
-//     // JSON.parse(localStorage.getItem(storageData));
-//     localStorage.getItem()
-// }
-//  getStorage();
